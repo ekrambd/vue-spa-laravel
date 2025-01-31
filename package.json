@@ -1,0 +1,28 @@
+{
+    "private": true,
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "devDependencies": {
+        "axios": "^1.1.2",
+        "laravel-vite-plugin": "^0.7.8",
+        "lodash": "^4.17.19",
+        "postcss": "^8.1.14",
+        "vite": "^5.2.10"
+    },
+    "dependencies": {
+        "@reown/appkit": "^1.6.5",
+        "@reown/appkit-adapter-wagmi": "^1.6.5",
+        "@tanstack/vue-query": "^5.64.2",
+        "@vitejs/plugin-vue": "^5.0.4",
+        "@wagmi/vue": "^0.1.8",
+        "ethers": "^6.13.5",
+        "viem": "^2.22.14",
+        "vue": "^3.4.26",
+        "vue-loader": "^17.3.1",
+        "vue-router": "^4.0.13",
+        "vue-toast-notification": "^3.1.2",
+        "vuex": "^4.0.2"
+    }
+}
