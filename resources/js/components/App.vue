@@ -7,7 +7,7 @@
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
         <div class="sidebar-brand-icon">
-          <img src="" alt="logo2">
+          <img :src="image" alt="logo2">
         </div>
         <div class="sidebar-brand-text mx-3">RuangAdmin</div>
       </a>
@@ -43,63 +43,27 @@
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
           aria-controls="collapseForm">
           <i class="fab fa-fw fa-wpforms"></i>
-          <span>Forms</span>
+          <span>Histories</span>
         </a>
         <div id="collapseForm" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Forms</h6>
-            <a class="collapse-item" href="form_basics.html">Form Basics</a>
-            <a class="collapse-item" href="form_advanceds.html">Form Advanceds</a>
+            <router-link class="collapse-item" to="/admin/rate-logs">Rate Logs</router-link>
+            <router-link class="collapse-item" to="/admin/duration-logs">Rate Timing Logs</router-link>
+            <router-link class="collapse-item" to="/admin/owner-logs">Owner Logs</router-link> 
+            <router-link class="collapse-item" to="/admin/purchase-logs">Purchase Logs</router-link>
+            <router-link class="collapse-item" to="/admin/withdraw-logs">Withdraw Logs</router-link>
           </div>
         </div>
       </li>
+       
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable" aria-expanded="true"
-          aria-controls="collapseTable">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Tables</span>
-        </a>
-        <div id="collapseTable" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Tables</h6>
-            <a class="collapse-item" href="simple-tables.html">Simple Tables</a>
-            <a class="collapse-item" href="datatables.html">DataTables</a>
-          </div>
-        </div>
+        <router-link class="nav-link" to="/admin/withdraw">
+          <i class="fas fa-fw fa-wallet"></i>
+          <span>Withdraw</span>
+        </router-link>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="ui-colors.html">
-          <i class="fas fa-fw fa-palette"></i>
-          <span>UI Colors</span>
-        </a>
-      </li>
-      <hr class="sidebar-divider">
-      <div class="sidebar-heading">
-        Examples
-      </div>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true"
-          aria-controls="collapsePage">
-          <i class="fas fa-fw fa-columns"></i>
-          <span>Pages</span>
-        </a>
-        <div id="collapsePage" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Example Pages</h6>
-            <a class="collapse-item" href="login.html">Login</a>
-            <a class="collapse-item" href="register.html">Register</a>
-            <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item" href="blank.html">Blank Page</a>
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>Charts</span>
-        </a>
-      </li>
-      <hr class="sidebar-divider">
+
       <div class="version" id="version-ruangadmin"></div>
     </ul>
     <!-- Sidebar -->
@@ -265,8 +229,8 @@
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                <img class="img-profile rounded-circle" src="" style="max-width: 60px" alt="img/boy.png">
-                <span class="ml-2 d-none d-lg-inline text-white small">Maman Ketoprak</span>
+                <img class="img-profile rounded-circle" :src=image style="max-width: 60px" alt="img/boy.png">
+                <span class="ml-2 d-none d-lg-inline text-white small">{{name}}</span>
               </a>
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                 <a class="dropdown-item" href="#">
@@ -318,11 +282,11 @@
 </template>
 
 <script>
-import { ref, computed, watch, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
-import axios from 'axios';
 import { useToast } from 'vue-toast-notification';
+import axios from 'axios';
 
 export default {
   setup() {
@@ -330,60 +294,49 @@ export default {
     const route = useRoute();
     const toast = useToast();
     const router = useRouter();
-
-    // Reactive reference to token
+    
     const token = computed(() => store.getters.getToken);
+    const name = ref('');
+    const image = ref('');
+    const form = ref({ token: null });
 
-    // Initialize form data
-    const form = ref({
-      token: null, // Initialize as null
-    });
-
-    // Watch for token changes and update form.token
     watch(token, (newToken) => {
       form.value.token = newToken;
     });
 
-    // Initialize form.token with the current token when component is mounted
     onMounted(() => {
-      form.value.token = token.value;
+      form.value.token = token.value; // Ensure token is updated before request
+
+      axios.get('/api/user-details/', {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${token.value}`, // Use `token.value` directly
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((response) => {
+        console.log(response.data.user.image);
+        name.value = response.data.user.name;
+        image.value = response.data.user.image;
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
     });
 
-    // Logout method
-    const logout = () => {
-      const tokenValue = token.value;
-      axios
-        .post('/api/logout/', tokenValue, {
-          headers: {
-            Accept: 'application/json',
-            Authorization: `Bearer ${tokenValue}`,
-            'Content-Type': 'application/json',
-          },
-        })
-        .then((response) => {
-          console.log(response);
-          if (response && response.data) {
-            console.log(response.data);
-            store.dispatch('removeToken');
-            router.push({ name: 'Login' });
-            toast.success(response.data.message, { position: 'top-right', duration: 1000 });
-            localStorage.setItem('logout', 'true');
-          } else {
-            console.error('Empty or malformed response received.');
-          }
-        })
-        .catch((error) => {
-          console.error('Error during logout:', error);
-          this.errors = error.response.data.errors;
-        });
+    const logout = () => { 
+      store.dispatch('logout').then(() => {
+        toast.success("Logged out successfully", { position: 'top-right', duration: 1000 });
+        localStorage.setItem('logout', 'true');
+        router.push({ name: 'Login' });
+      });
     };
 
-    // Returning all the reactive properties and methods to be used in the template
     return {
       currentRouteName: computed(() => route.name),
-      form,
-      token,
       logout,
+      name,
+      image, // ✅ Return `image` so it's accessible in the template
     };
   },
 };

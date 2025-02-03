@@ -5,7 +5,13 @@ import dashboard from './pages/dashboard.vue';
 import SetRate from './pages/set_rate.vue';
 import SetRateTiming from './pages/set_rate_timing.vue';
 import OwnerShip from './pages/ownership.vue';
-import AddToken from './pages/tokens/create.vue';
+import RateLogs from './pages/rate_logs.vue';
+import DurationLogs from './pages/duration_logs.vue';
+import OwnerLogs from './pages/owner_logs.vue';
+import Withdraw from './pages/withdraw.vue';
+import PurchaseLogs from './pages/purchase_logs.vue';
+import WithdrawLogs from './pages/withdraw_logs.vue';
+
 
 const routes = [
 
@@ -62,6 +68,61 @@ const routes = [
 		requiredAuth: true,
 	}
   },
+  
+  {
+	path: '/admin/rate-logs',
+	name: 'RateLogs',
+	component: RateLogs,
+	meta:{
+		requiredAuth: true,
+	}
+  },
+
+  {
+	path: '/admin/duration-logs',
+	name: 'DurationLogs',
+	component: DurationLogs,
+	meta:{
+		requiredAuth: true,
+	}
+  },
+
+  {
+	path: '/admin/owner-logs',
+	name: 'OwnerLogs',
+	component: OwnerLogs,
+	meta:{
+		requiredAuth: true,
+	}
+  },
+
+  {
+	path: '/admin/withdraw',
+	name: 'Withdraw',
+	component: Withdraw,
+	meta:{
+		requiredAuth: true,
+	}
+  },
+
+  {
+	path: '/admin/purchase-logs',
+	name: 'PurchaseLogs',
+	component: PurchaseLogs,
+	meta:{
+		requiredAuth: true,
+	}
+  },
+
+  {
+	path: '/admin/withdraw-logs',
+	name: 'WithdrawLogs',
+	component: WithdrawLogs,
+	meta:{
+		requiredAuth: true,
+	}
+  },
+
 ];
 
 const router = createRouter({

@@ -52,28 +52,6 @@
   <p><a href="#">Privacy Policy</a> | <a href="#">Terms & Conditions</a></p>
 </footer>
 
-<script>
-  // Countdown Timer
-  const countdown = document.getElementById('countdown-timer');
-  const endDate = new Date().getTime() + (7 * 24 * 60 * 60 * 1000); // 7 days from now
-
-  function updateCountdown() {
-    const now = new Date().getTime();
-    const timeLeft = endDate - now;
-
-    if (timeLeft > 0) {
-      const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((timeLeft % (1000 * 60)) / (1000 * 60));
-      const seconds = Math.floor((timeLeft % (1000)) / 1000);
-      countdown.textContent = ${days}d ${hours}h ${minutes}m ${seconds}s;
-    } else {
-      countdown.textContent = "Presale Ended";
-    }
-  }
-
-  setInterval(updateCountdown, 1000);
-</script>
 
 </body>
 </html>

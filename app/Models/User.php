@@ -38,6 +38,33 @@ class User extends Authenticatable
      *
      * @var array<string, string>
      */
+
+    public function getImageAttribute($value)
+    {
+        $decodedFilename = rawurldecode($value);
+        $baseUrl = url('/');
+        if($value == NULL)
+        {
+            return $decodedFilename;
+        }
+        else
+        {
+            return $baseUrl . '/' . $decodedFilename;
+        }
+        
+    }
+
+
+    public function setImageAttribute($value)
+    {   
+        if($value != "")
+        {
+            $filename = rawurlencode(basename($value));
+            $this->attributes['image'] = "uploads/categories/".$filename;
+        }
+        
+    }
+
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];

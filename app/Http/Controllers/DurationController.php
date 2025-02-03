@@ -59,6 +59,25 @@ class DurationController extends Controller
         }
     }
 
+    public function durationLogs(Request $request)
+    {
+        try{
+            $query = Durationlog::query();
+            if($request->has('term'))
+            {
+                $query->where('durationlogs.transaction_hash', 'LIKE', "%$request->term%");
+            }
+            $logs = $query->latest()->paginate(10);
+            return response()->json($logs);
+        }catch (Exception $e) {
+            return response()->json([
+                'status' => false,
+                'code' => $e->getCode(),
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
     public function getDate()
     {
     	$timestamp = 1740898802;

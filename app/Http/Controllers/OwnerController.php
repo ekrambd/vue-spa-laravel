@@ -66,4 +66,23 @@ class OwnerController extends Controller
         	return response()->json(['status'=>false, 'code'=>$e->getCode(), 'message'=>$e->getMessage()],500);
         }
     }
+
+    public function ownerLogs(Request $request)
+    {
+    	try{
+            $query = Ownerlog::query();
+            if($request->has('term'))
+            {
+                $query->where('ownerlogs.transaction_hash', 'LIKE', "%$request->term%");
+            }
+            $logs = $query->latest()->paginate(10);
+            return response()->json($logs);
+        }catch (Exception $e) {
+            return response()->json([
+                'status' => false,
+                'code' => $e->getCode(),
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }

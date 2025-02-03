@@ -87,7 +87,7 @@
      try{
       loading.value = true;
       errors.value = {};
-      const contractAddress = "0x0a9e734ea2253ae046fc3875278492d818e674bf"; 
+      const contractAddress = "0x1D1e4E7028C6335c1cD1d78b2bB0cD3CBABD08b9"; 
       const contractABI = [
         "function presaleOn(uint256 _endTime) external returns (bool)",
         "event PresaleOn(uint256 endTime)"

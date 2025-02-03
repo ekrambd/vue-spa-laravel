@@ -56,4 +56,24 @@ class RateController extends Controller
     	   return response()->json(['status'=>false, 'code'=>$e->getCode(), 'message'=>$e->getMessage()],500);
     	}
     }
+
+    public function rateLogs(Request $request)
+    {   
+        try{
+
+            $query = Ratelog::query();
+            if($request->has('term'))
+            {
+                $query->where('ratelogs.transaction_hash', 'LIKE', "%$request->term%");
+            }
+            $logs = $query->latest()->paginate(10);
+            return response()->json($logs);
+        }catch (Exception $e) {
+            return response()->json([
+                'status' => false,
+                'code' => $e->getCode(),
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }

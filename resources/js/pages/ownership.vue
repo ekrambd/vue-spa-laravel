@@ -51,7 +51,7 @@
  const router = useRouter();
 
  const token = computed(() => store.getters.getToken);
- const form = ref({ token: null });
+ const form = ref({ token: null }); 
 
  watch(token, (newToken) => {
     form.value.token = newToken;
@@ -61,17 +61,6 @@
 
  onMounted(() => {
     form.value.token = token.value;
-    // axios.get('/api/get-rate/', {
-    //     headers: {
-    //         Accept: 'application/json',
-    //         Authorization: `Bearer ${tokenValue}`,
-    //         'Content-Type': 'application/json',
-    //     },
-    // }).then((response) => {
-    //     rate.value = response.data.data.rate;
-    // }).catch((error) => {
-    //     console.error('Error:', error);
-    // });
     axios.get('/api/get-owner/', {
         headers: {
             Accept: 'application/json',
@@ -92,7 +81,7 @@
         errors.value = {};
 
         const { walletProvider } = useAppKitProvider('eip155');
-        const contractAddress = "0x0a9e734ea2253ae046fc3875278492d818e674bf";
+        const contractAddress = "0x1D1e4E7028C6335c1cD1d78b2bB0cD3CBABD08b9";
         const contractABI = [
             "function transferOwnership(address newOwner) external returns (bool)",
             "event TransferOwnerShip(address indexed newOwner)"

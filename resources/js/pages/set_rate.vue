@@ -86,7 +86,7 @@
       errors.value = {}; // Clear previous errors
   
       const { walletProvider } = useAppKitProvider('eip155');
-      const contractAddress = "0x0a9e734ea2253ae046fc3875278492d818e674bf";
+      const contractAddress = "0x1D1e4E7028C6335c1cD1d78b2bB0cD3CBABD08b9";
       const contractABI = ["function setRate(uint256 _rate) public returns (bool)"];
       
       const provider = new BrowserProvider(walletProvider);
