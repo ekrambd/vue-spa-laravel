@@ -305,24 +305,30 @@ export default {
     });
 
     onMounted(() => {
-      form.value.token = token.value; // Ensure token is updated before request
-
-      axios.get('/api/user-details/', {
-        headers: {
-          Accept: 'application/json',
-          Authorization: `Bearer ${token.value}`, // Use `token.value` directly
-          'Content-Type': 'application/json',
-        },
-      })
-      .then((response) => {
-        console.log(response.data.user.image);
-        name.value = response.data.user.name;
-        image.value = response.data.user.image;
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+      watch(token, (newToken) => {
+        if (newToken) {
+          fetchUserDetails(newToken);
+        }
+      }, { immediate: true }); // 👈 Ensures the function runs immediately if token is already set
     });
+
+const fetchUserDetails = (authToken) => {
+  axios.get('/api/user-details/', {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${authToken}`,
+      'Content-Type': 'application/json',
+    },
+  })
+  .then((response) => {
+    console.log(response.data.user.image);
+    name.value = response.data.user.name;
+    image.value = response.data.user.image;
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
+};
 
     const logout = () => { 
       store.dispatch('logout').then(() => {
